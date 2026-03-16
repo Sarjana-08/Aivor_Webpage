@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timesheet - Aivor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h2>Aivor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="timesheet.html" class="nav-item active">
+                    <span class="icon">⏱️</span>
+                    <span>Timesheet</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Attendance</span>
+                </a>
+                <a href="company-documents.html" class="nav-item">
+                    <span class="icon">📄</span>
+                    <span>Company Documents</span>
+                </a>
+                <a href="announcement.html" class="nav-item">
+                    <span class="icon">📢</span>
+                    <span>Announcement</span>
+                </a>
+                <a href="leave.html" class="nav-item">
+                    <span class="icon">📅</span>
+                    <span>Leave</span>
+                </a>
+                <a href="calendar.html" class="nav-item">
+                    <span class="icon">📆</span>
+                    <span>Calendar</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="breadcrumb">Timesheet</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Guest User</span>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="form-container">
+                    <h1>Timesheet</h1>
+                    <p style="color: #9CA3AF; margin-bottom: 30px;">
+                        Track and manage your daily working hours and project time allocation.
+                    </p>
+                    <div class="cards-grid">
+                        <div class="card card-primary">
+                            <div class="card-icon">⏱️</div>
+                            <h3>Daily Hours</h3>
+                            <p>Total: 8.5 hours today</p>
+                        </div>
+                        <div class="card card-secondary">
+                            <div class="card-icon">📊</div>
+                            <h3>Weekly Hours</h3>
+                            <p>Total: 42 hours this week</p>
+                        </div>
+                        <div class="card card-success">
+                            <div class="card-icon">📈</div>
+                            <h3>Monthly Hours</h3>
+                            <p>Total: 168 hours this month</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

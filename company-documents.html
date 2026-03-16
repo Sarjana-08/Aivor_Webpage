@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Company Documents - Aivor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h2>Aivor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="timesheet.html" class="nav-item">
+                    <span class="icon">⏱️</span>
+                    <span>Timesheet</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Attendance</span>
+                </a>
+                <a href="company-documents.html" class="nav-item active">
+                    <span class="icon">📄</span>
+                    <span>Company Documents</span>
+                </a>
+                <a href="announcement.html" class="nav-item">
+                    <span class="icon">📢</span>
+                    <span>Announcement</span>
+                </a>
+                <a href="leave.html" class="nav-item">
+                    <span class="icon">📅</span>
+                    <span>Leave</span>
+                </a>
+                <a href="calendar.html" class="nav-item">
+                    <span class="icon">📆</span>
+                    <span>Calendar</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="breadcrumb">Company Documents</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Guest User</span>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h1>Company Documents</h1>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Document Name</th>
+                                    <th>Category</th>
+                                    <th>Upload Date</th>
+                                    <th>File Size</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Company Policy Handbook</td>
+                                    <td>Policies</td>
+                                    <td>2026-02-15</td>
+                                    <td>2.5 MB</td>
+                                    <td>
+                                        <button class="btn-action" onclick="downloadDocument('Company Policy Handbook', 'policy-handbook.pdf')">📥 Download</button>
+                                        <button class="btn-action" onclick="viewDocument('Company Policy Handbook', 'This is the company policy handbook containing guidelines for all employees.', 'policy-handbook.pdf')">👁️ View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Code of Conduct</td>
+                                    <td>Policies</td>
+                                    <td>2026-02-15</td>
+                                    <td>1.2 MB</td>
+                                    <td>
+                                        <button class="btn-action" onclick="downloadDocument('Code of Conduct', 'code-of-conduct.pdf')">📥 Download</button>
+                                        <button class="btn-action" onclick="viewDocument('Code of Conduct', 'Professional standards and ethical guidelines for all team members.', 'code-of-conduct.pdf')">👁️ View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Benefits Information</td>
+                                    <td>Benefits</td>
+                                    <td>2026-02-20</td>
+                                    <td>3.1 MB</td>
+                                    <td>
+                                        <button class="btn-action" onclick="downloadDocument('Benefits Information', 'benefits-info.pdf')">📥 Download</button>
+                                        <button class="btn-action" onclick="viewDocument('Benefits Information', 'Comprehensive overview of company benefits including health insurance, 401k, and other perks.', 'benefits-info.pdf')">👁️ View</button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Leave Policy 2026</td>
+                                    <td>Policies</td>
+                                    <td>2026-01-10</td>
+                                    <td>890 KB</td>
+                                    <td>
+                                        <button class="btn-action" onclick="downloadDocument('Leave Policy 2026', 'leave-policy-2026.pdf')">📥 Download</button>
+                                        <button class="btn-action" onclick="viewDocument('Leave Policy 2026', 'Updated leave policy for 2026 with new guidelines and entitlements.', 'leave-policy-2026.pdf')">👁️ View</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function downloadDocument(docName, fileName) {
+            // Create a simple text file and trigger download
+            const content = `Document: ${docName}\nDownloaded on: ${new Date().toLocaleString()}\n\nThis is a placeholder for the actual document content.\nIn a real system, this would download the actual file from the server.`;
+            
+            const element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(content));
+            element.setAttribute('download', fileName);
+            element.style.display = 'none';
+            
+            document.body.appendChild(element);
+            element.click();
+            document.body.removeChild(element);
+            
+            showNotification(`${docName} downloaded successfully!`, 'success');
+        }
+
+        function viewDocument(docName, content, fileName) {
+            // Create a modal to display document content
+            const modal = document.createElement('div');
+            modal.id = 'docModal';
+            modal.style.cssText = `
+                position: fixed;
+                z-index: 1000;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+            `;
+
+            const modalContent = document.createElement('div');
+            modalContent.style.cssText = `
+                background-color: white;
+                padding: 30px;
+                border-radius: 12px;
+                width: 90%;
+                max-width: 700px;
+                max-height: 80vh;
+                overflow-y: auto;
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            `;
+
+            const header = document.createElement('div');
+            header.style.cssText = `
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 20px;
+                border-bottom: 1px solid #E5E7EB;
+                padding-bottom: 15px;
+            `;
+
+            const title = document.createElement('h2');
+            title.textContent = `📄 ${docName}`;
+            title.style.cssText = 'margin: 0; color: #1F2937;';
+
+            const closeBtn = document.createElement('button');
+            closeBtn.textContent = '✕';
+            closeBtn.style.cssText = `
+                background: none;
+                border: none;
+                font-size: 24px;
+                cursor: pointer;
+                color: #9CA3AF;
+                padding: 0;
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 6px;
+                transition: all 0.3s ease;
+            `;
+            closeBtn.onmouseover = function() {
+                this.style.backgroundColor = '#F3F4F6';
+                this.style.color = '#1F2937';
+            };
+            closeBtn.onmouseout = function() {
+                this.style.backgroundColor = 'transparent';
+                this.style.color = '#9CA3AF';
+            };
+            closeBtn.onclick = function() {
+                document.body.removeChild(modal);
+            };
+
+            header.appendChild(title);
+            header.appendChild(closeBtn);
+
+            const body = document.createElement('div');
+            body.style.cssText = `
+                color: #374151;
+                line-height: 1.8;
+                margin-bottom: 20px;
+            `;
+            body.innerHTML = `
+                <p><strong>File Name:</strong> ${fileName}</p>
+                <p><strong>Opened:</strong> ${new Date().toLocaleString()}</p>
+                <div style="background-color: #F3F4F6; padding: 15px; border-radius: 8px; margin-top: 15px;">
+                    <p>${content}</p>
+                </div>
+            `;
+
+            const footer = document.createElement('div');
+            footer.style.cssText = `
+                display: flex;
+                gap: 10px;
+                justify-content: flex-end;
+                border-top: 1px solid #E5E7EB;
+                padding-top: 15px;
+            `;
+
+            const printBtn = document.createElement('button');
+            printBtn.textContent = '🖨️ Print';
+            printBtn.style.cssText = `
+                padding: 10px 20px;
+                background-color: #F3F4F6;
+                color: #374151;
+                border: 1px solid #E5E7EB;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            `;
+            printBtn.onmouseover = function() {
+                this.style.backgroundColor = '#E5E7EB';
+            };
+            printBtn.onmouseout = function() {
+                this.style.backgroundColor = '#F3F4F6';
+            };
+            printBtn.onclick = function() {
+                window.print();
+            };
+
+            const downloadBtn = document.createElement('button');
+            downloadBtn.textContent = '📥 Download';
+            downloadBtn.style.cssText = `
+                padding: 10px 20px;
+                background-color: #4F46E5;
+                color: white;
+                border: none;
+                border-radius: 6px;
+                cursor: pointer;
+                font-weight: 600;
+                transition: all 0.3s ease;
+            `;
+            downloadBtn.onmouseover = function() {
+                this.style.backgroundColor = '#4338CA';
+            };
+            downloadBtn.onmouseout = function() {
+                this.style.backgroundColor = '#4F46E5';
+            };
+            downloadBtn.onclick = function() {
+                downloadDocument(docName, fileName);
+                document.body.removeChild(modal);
+            };
+
+            footer.appendChild(printBtn);
+            footer.appendChild(downloadBtn);
+
+            modalContent.appendChild(header);
+            modalContent.appendChild(body);
+            modalContent.appendChild(footer);
+            modal.appendChild(modalContent);
+            document.body.appendChild(modal);
+
+            showNotification(`Viewing ${docName}`, 'info');
+        }
+    </script>

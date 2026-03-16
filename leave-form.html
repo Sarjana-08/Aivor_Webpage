@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Leave - Aivor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h2>Aivor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="timesheet.html" class="nav-item">
+                    <span class="icon">⏱️</span>
+                    <span>Timesheet</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Attendance</span>
+                </a>
+                <a href="company-documents.html" class="nav-item">
+                    <span class="icon">📄</span>
+                    <span>Company Documents</span>
+                </a>
+                <a href="announcement.html" class="nav-item">
+                    <span class="icon">📢</span>
+                    <span>Announcement</span>
+                </a>
+                <a href="leave.html" class="nav-item active">
+                    <span class="icon">📅</span>
+                    <span>Leave</span>
+                </a>
+                <a href="calendar.html" class="nav-item">
+                    <span class="icon">📆</span>
+                    <span>Calendar</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="breadcrumb">Leave / Apply for Leave</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Guest User</span>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="form-container">
+                    <h1>Employee Leave Form</h1>
+                    
+                    <form id="leaveForm" class="leave-form" onsubmit="submitLeaveForm(event)">
+                        <div class="form-group">
+                            <label for="name">Name <span class="required">*</span></label>
+                            <input 
+                                type="text" 
+                                id="name" 
+                                name="name" 
+                                placeholder="Your Name"
+                                readonly
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">User Email <span class="required">*</span></label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                placeholder="your.email@company.com"
+                                readonly
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="fromDate">From Date <span class="required">*</span></label>
+                            <input 
+                                type="date" 
+                                id="fromDate" 
+                                name="fromDate"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="toDate">To Date <span class="required">*</span></label>
+                            <input 
+                                type="date" 
+                                id="toDate" 
+                                name="toDate"
+                                required
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dayType">Day Type <span class="required">*</span></label>
+                            <select id="dayType" name="dayType" required>
+                                <option value="">Select Day Type</option>
+                                <option value="fullDay">Full Day</option>
+                                <option value="halfDay">Half Day</option>
+                                <option value="offDay">Off Day</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="leaveType">Leave Type <span class="required">*</span></label>
+                            <select id="leaveType" name="leaveType" required>
+                                <option value="">Select Leave Type</option>
+                                <option value="casualLeave">Casual Leave</option>
+                                <option value="sickLeave">Sick Leave</option>
+                                <option value="paidLeave">Paid Leave</option>
+                                <option value="otherLeave">Other Leave</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="reason">Reason</label>
+                            <textarea 
+                                id="reason" 
+                                name="reason" 
+                                placeholder="Enter the reason for your leave (optional)"
+                                rows="4"
+                            ></textarea>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="reset" class="btn btn-secondary">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Pre-fill user data from logged-in user
+        const user = getCurrentUser();
+        if (user) {
+            document.getElementById('name').value = user.name;
+            document.getElementById('email').value = user.userEmail;
+        }
+
+        function submitLeaveForm(e) {
+            e.preventDefault();
+            
+            const formData = {
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                fromDate: document.getElementById('fromDate').value,
+                toDate: document.getElementById('toDate').value,
+                dayType: document.getElementById('dayType').value,
+                leaveType: document.getElementById('leaveType').value,
+                reason: document.getElementById('reason').value
+            };
+
+            // Store in localStorage
+            let leaves = JSON.parse(localStorage.getItem('leaves')) || [];
+            leaves.push({
+                ...formData,
+                id: Date.now(),
+                status: 'pending',
+                appliedDate: new Date().toLocaleDateString()
+            });
+            localStorage.setItem('leaves', JSON.stringify(leaves));
+
+            // Show success message
+            alert('Leave request submitted successfully!');
+            document.getElementById('leaveForm').reset();
+            
+            // Redirect to leave list
+            setTimeout(() => {
+                window.location.href = 'leave.html';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>

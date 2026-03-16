@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Aivor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h2>Aivor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="timesheet.html" class="nav-item">
+                    <span class="icon">⏱️</span>
+                    <span>Timesheet</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Attendance</span>
+                </a>
+                <a href="company-documents.html" class="nav-item">
+                    <span class="icon">📄</span>
+                    <span>Company Documents</span>
+                </a>
+                <a href="announcement.html" class="nav-item">
+                    <span class="icon">📢</span>
+                    <span>Announcement</span>
+                </a>
+                <a href="leave.html" class="nav-item">
+                    <span class="icon">📅</span>
+                    <span>Leave</span>
+                </a>
+                <a href="calendar.html" class="nav-item">
+                    <span class="icon">📆</span>
+                    <span>Calendar</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="breadcrumb">Dashboard</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Guest User</span>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <section class="dashboard-cards">
+                    <h1>Welcome to Aivor</h1>
+                    <div class="cards-grid">
+                        <div class="card card-primary" onclick="window.location.href='leave-form.html'">
+                            <div class="card-icon">📝</div>
+                            <h3>Apply for Leave</h3>
+                            <p>Submit a new leave request</p>
+                        </div>
+
+                        <div class="card card-secondary" onclick="window.location.href='leave.html'">
+                            <div class="card-icon">📋</div>
+                            <h3>My Leave Requests</h3>
+                            <p>View and manage your leave requests</p>
+                        </div>
+
+                        <div class="card card-success" onclick="window.location.href='attendance.html'">
+                            <div class="card-icon">✅</div>
+                            <h3>Attendance</h3>
+                            <p>Check your attendance records</p>
+                        </div>
+
+                        <div class="card card-info" onclick="window.location.href='calendar.html'">
+                            <div class="card-icon">📅</div>
+                            <h3>Leave Calendar</h3>
+                            <p>View leaves in calendar format</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="quick-stats">
+                    <h2>Your Leave Balance</h2>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <h4>Total Leave Balance</h4>
+                            <p class="stat-value">20</p>
+                            <p class="stat-label">Days</p>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Used Leaves</h4>
+                            <p class="stat-value">8</p>
+                            <p class="stat-label">Days</p>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Pending Requests</h4>
+                            <p class="stat-value">2</p>
+                            <p class="stat-label">Requests</p>
+                        </div>
+                        <div class="stat-box">
+                            <h4>Remaining Balance</h4>
+                            <p class="stat-value">12</p>
+                            <p class="stat-label">Days</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aivor - Employee Leave Management System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-card">
+            <!-- Aivor Logo -->
+            <div class="logo-section">
+                <svg class="aivor-logo" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Circle Background -->
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    
+                    <!-- Letter A -->
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    
+                    <!-- Letter V Right side -->
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h1>Aivor</h1>
+                <p>Employee Leave Management System</p>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="Enter your email" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="Enter your password" 
+                        required
+                    >
+                </div>
+
+                <div class="form-group checkbox">
+                    <input type="checkbox" id="remember" name="remember">
+                    <label for="remember">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Login</button>
+
+                <p class="form-footer">
+                    Don't have an account? <a href="#signup">Sign up here</a>
+                </p>
+            </form>
+
+            <!-- Demo Button -->
+            <div class="demo-section">
+                <p>Demo Accounts:</p>
+                <p style="font-size: 12px; color: #666;">
+                    Email: demo@aivor.com<br>
+                    Password: demo123<br>
+                    <br>
+                    Email: john@aivor.com<br>
+                    Password: john123
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

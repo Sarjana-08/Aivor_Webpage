@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Requests - Aivor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h2>Aivor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="timesheet.html" class="nav-item">
+                    <span class="icon">⏱️</span>
+                    <span>Timesheet</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Attendance</span>
+                </a>
+                <a href="company-documents.html" class="nav-item">
+                    <span class="icon">📄</span>
+                    <span>Company Documents</span>
+                </a>
+                <a href="announcement.html" class="nav-item">
+                    <span class="icon">📢</span>
+                    <span>Announcement</span>
+                </a>
+                <a href="leave.html" class="nav-item active">
+                    <span class="icon">📅</span>
+                    <span>Leave</span>
+                </a>
+                <a href="calendar.html" class="nav-item">
+                    <span class="icon">📆</span>
+                    <span>Calendar</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="breadcrumb">Leave / Leave Requests</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Guest User</span>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="table-container">
+                    <div class="table-header">
+                        <h1>Leave Request</h1>
+                        <button class="btn btn-primary" onclick="window.location.href='leave-form.html'">
+                            ➕ Apply Leave
+                        </button>
+                    </div>
+
+                    <div class="table-filters">
+                        <input type="text" id="searchInput" placeholder="Search by name, email, or reason..." class="search-box">
+                        <select id="filterStatus" class="filter-select" onchange="filterTable()">
+                            <option value="">All Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="approved">Approved</option>
+                            <option value="rejected">Rejected</option>
+                        </select>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="data-table" id="leaveTable">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>From Date</th>
+                                    <th>To Date</th>
+                                    <th>Leave Type</th>
+                                    <th>Reason</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                                <!-- Populated by JavaScript -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="table-pagination">
+                        <p>Rows per page: <select onchange="setRowsPerPage(this.value)"><option>10</option><option>25</option><option>50</option></select></p>
+                        <div class="pagination-buttons">
+                            <button class="btn-pagination">&lt;</button>
+                            <span class="page-info">1 to 4</span>
+                            <button class="btn-pagination">&gt;</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Edit Leave Modal -->
+                <div id="editModal" class="modal-edit" style="display: none;">
+                    <div class="modal-edit-content">
+                        <div class="modal-edit-header">
+                            <h2>Edit Leave Request</h2>
+                            <button class="modal-close-edit" onclick="closeEditModal()">&times;</button>
+                        </div>
+
+                        <form id="editForm" onsubmit="saveEditedLeave(event)">
+                            <div class="modal-edit-body">
+                                <div class="form-group">
+                                    <label for="editFromDate">From Date <span class="required">*</span></label>
+                                    <input type="date" id="editFromDate" name="editFromDate" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editToDate">To Date <span class="required">*</span></label>
+                                    <input type="date" id="editToDate" name="editToDate" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editDayType">Day Type <span class="required">*</span></label>
+                                    <select id="editDayType" name="editDayType" required>
+                                        <option value="">Select Day Type</option>
+                                        <option value="fullDay">Full Day</option>
+                                        <option value="halfDay">Half Day</option>
+                                        <option value="offDay">Off Day</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editLeaveType">Leave Type <span class="required">*</span></label>
+                                    <select id="editLeaveType" name="editLeaveType" required>
+                                        <option value="">Select Leave Type</option>
+                                        <option value="casualLeave">Casual Leave</option>
+                                        <option value="sickLeave">Sick Leave</option>
+                                        <option value="paidLeave">Paid Leave</option>
+                                        <option value="otherLeave">Other Leave</option>
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editReason">Reason</label>
+                                    <textarea id="editReason" name="editReason" rows="4" placeholder="Enter the reason for your leave (optional)"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="editStatus">Status</label>
+                                    <select id="editStatus" name="editStatus">
+                                        <option value="pending">Pending</option>
+                                        <option value="approved">Approved</option>
+                                        <option value="rejected">Rejected</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="modal-edit-footer">
+                                <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <style>
+                    .modal-edit {
+                        position: fixed;
+                        z-index: 1000;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                        background-color: rgba(0, 0, 0, 0.5);
+                        animation: fadeInModal 0.3s ease;
+                    }
+
+                    @keyframes fadeInModal {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+
+                    .modal-edit-content {
+                        background-color: white;
+                        margin: 5% auto;
+                        padding: 0;
+                        border-radius: 12px;
+                        width: 90%;
+                        max-width: 500px;
+                        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+                        animation: slideDownModal 0.3s ease;
+                    }
+
+                    @keyframes slideDownModal {
+                        from {
+                            transform: translateY(-50px);
+                            opacity: 0;
+                        }
+                        to {
+                            transform: translateY(0);
+                            opacity: 1;
+                        }
+                    }
+
+                    .modal-edit-header {
+                        padding: 20px;
+                        border-bottom: 1px solid #E5E7EB;
+                        display: flex;
+                        justify-content: space-between;
+                        align-items: center;
+                    }
+
+                    .modal-edit-header h2 {
+                        margin: 0;
+                        color: #1F2937;
+                        font-size: 24px;
+                    }
+
+                    .modal-close-edit {
+                        background: none;
+                        border: none;
+                        font-size: 28px;
+                        cursor: pointer;
+                        color: #9CA3AF;
+                        padding: 0;
+                        width: 32px;
+                        height: 32px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: 6px;
+                        transition: all 0.3s ease;
+                    }
+
+                    .modal-close-edit:hover {
+                        background-color: #F3F4F6;
+                        color: #1F2937;
+                    }
+
+                    .modal-edit-body {
+                        padding: 20px;
+                        max-height: 500px;
+                        overflow-y: auto;
+                    }
+
+                    .modal-edit-footer {
+                        padding: 20px;
+                        border-top: 1px solid #E5E7EB;
+                        display: flex;
+                        gap: 10px;
+                        justify-content: flex-end;
+                    }
+                </style>
+
+    <script src="script.js"></script>
+    <script>
+        function loadLeaves() {
+            const leaves = JSON.parse(localStorage.getItem('leaves')) || getSampleLeaves();
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            if (leaves.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Sorry, no matching records found</td></tr>';
+                return;
+            }
+
+            leaves.forEach(leave => {
+                const row = document.createElement('tr');
+                const statusClass = leave.status === 'pending' ? 'status-pending' : 
+                                   leave.status === 'approved' ? 'status-approved' : 'status-rejected';
+                
+                row.innerHTML = `
+                    <td>${leave.name}</td>
+                    <td>${leave.email}</td>
+                    <td>${leave.fromDate}</td>
+                    <td>${leave.toDate}</td>
+                    <td>${leave.leaveType}</td>
+                    <td>${leave.reason || '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${leave.status.charAt(0).toUpperCase() + leave.status.slice(1)}</span></td>
+                    <td>
+                        <button class="btn-action" onclick="editLeave(${leave.id})">Edit</button>
+                        <button class="btn-action btn-delete" onclick="deleteLeave(${leave.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function getSampleLeaves() {
+            return [
+                {
+                    id: 1,
+                    name: 'Demo User',
+                    email: 'demo@aivor.com',
+                    fromDate: '2026-03-10',
+                    toDate: '2026-03-12',
+                    dayType: 'fullDay',
+                    leaveType: 'Casual Leave',
+                    reason: 'Personal work',
+                    status: 'approved',
+                    appliedDate: '2026-03-05'
+                },
+                {
+                    id: 2,
+                    name: 'Demo User',
+                    email: 'demo@aivor.com',
+                    fromDate: '2026-03-20',
+                    toDate: '2026-03-22',
+                    dayType: 'halfDay',
+                    leaveType: 'Sick Leave',
+                    reason: 'Medical appointment',
+                    status: 'pending',
+                    appliedDate: '2026-03-07'
+                }
+            ];
+        }
+
+        function filterTable() {
+            const statusFilter = document.getElementById('filterStatus').value;
+            const leaves = JSON.parse(localStorage.getItem('leaves')) || getSampleLeaves();
+            
+            let filtered = leaves;
+            if (statusFilter) {
+                filtered = leaves.filter(leave => leave.status === statusFilter);
+            }
+
+            localStorage.setItem('leaves', JSON.stringify(leaves));
+            const tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
+
+            if (filtered.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 20px;">Sorry, no matching records found</td></tr>';
+                return;
+            }
+
+            filtered.forEach(leave => {
+                const row = document.createElement('tr');
+                const statusClass = leave.status === 'pending' ? 'status-pending' : 
+                                   leave.status === 'approved' ? 'status-approved' : 'status-rejected';
+                
+                row.innerHTML = `
+                    <td>${leave.name}</td>
+                    <td>${leave.email}</td>
+                    <td>${leave.fromDate}</td>
+                    <td>${leave.toDate}</td>
+                    <td>${leave.leaveType}</td>
+                    <td>${leave.reason || '-'}</td>
+                    <td><span class="status-badge ${statusClass}">${leave.status.charAt(0).toUpperCase() + leave.status.slice(1)}</span></td>
+                    <td>
+                        <button class="btn-action" onclick="editLeave(${leave.id})">Edit</button>
+                        <button class="btn-action btn-delete" onclick="deleteLeave(${leave.id})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function deleteLeave(id) {
+            if (confirm('Are you sure you want to delete this leave request?')) {
+                let leaves = JSON.parse(localStorage.getItem('leaves')) || getSampleLeaves();
+                leaves = leaves.filter(leave => leave.id !== id);
+                localStorage.setItem('leaves', JSON.stringify(leaves));
+                showNotification('Leave request deleted successfully!', 'success');
+                loadLeaves();
+            }
+        }
+
+        let currentEditingLeaveId = null;
+
+        function editLeave(id) {
+            const leaves = JSON.parse(localStorage.getItem('leaves')) || getSampleLeaves();
+            const leave = leaves.find(l => l.id === id);
+
+            if (!leave) {
+                alert('Leave request not found');
+                return;
+            }
+
+            // Store current editing leave ID
+            currentEditingLeaveId = id;
+
+            // Pre-fill the form with current leave data
+            document.getElementById('editFromDate').value = leave.fromDate;
+            document.getElementById('editToDate').value = leave.toDate;
+            document.getElementById('editDayType').value = leave.dayType;
+            document.getElementById('editLeaveType').value = leave.leaveType;
+            document.getElementById('editReason').value = leave.reason || '';
+            document.getElementById('editStatus').value = leave.status;
+
+            // Show modal
+            document.getElementById('editModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+            currentEditingLeaveId = null;
+        }
+
+        function saveEditedLeave(event) {
+            event.preventDefault();
+
+            if (!currentEditingLeaveId) {
+                alert('Error: Leave ID not found');
+                return;
+            }
+
+            const fromDate = document.getElementById('editFromDate').value;
+            const toDate = document.getElementById('editToDate').value;
+            const dayType = document.getElementById('editDayType').value;
+            const leaveType = document.getElementById('editLeaveType').value;
+            const reason = document.getElementById('editReason').value;
+            const status = document.getElementById('editStatus').value;
+
+            if (new Date(fromDate) > new Date(toDate)) {
+                alert('From Date must be before To Date');
+                return;
+            }
+
+            let leaves = JSON.parse(localStorage.getItem('leaves')) || getSampleLeaves();
+            const index = leaves.findIndex(l => l.id === currentEditingLeaveId);
+
+            if (index !== -1) {
+                leaves[index] = {
+                    ...leaves[index],
+                    fromDate: fromDate,
+                    toDate: toDate,
+                    dayType: dayType,
+                    leaveType: leaveType,
+                    reason: reason,
+                    status: status
+                };
+
+                localStorage.setItem('leaves', JSON.stringify(leaves));
+                closeEditModal();
+                loadLeaves();
+                showNotification('Leave request updated successfully!', 'success');
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('editModal');
+            if (event.target === modal) {
+                closeEditModal();
+            }
+        }
+
+        function setRowsPerPage(rows) {
+            // Implementation for pagination
+        }
+
+        // Load leaves on page load
+        loadLeaves();
+    </script>
+</body>
+</html>

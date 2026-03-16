@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave Calendar - Aivor</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <svg class="logo-small" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="100" cy="100" r="95" fill="none" stroke="#4F46E5" stroke-width="2"/>
+                    <g fill="#4F46E5">
+                        <polygon points="100,30 130,100 110,100 112,106 128,106 100,170 72,106 88,106 90,100 70,100"/>
+                    </g>
+                    <g fill="#06B6D4" opacity="0.8">
+                        <polygon points="135,45 155,100 145,100 140,85 130,100 120,100"/>
+                    </g>
+                </svg>
+                <h2>Aivor</h2>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item">
+                    <span class="icon">📊</span>
+                    <span>Dashboard</span>
+                </a>
+                <a href="timesheet.html" class="nav-item">
+                    <span class="icon">⏱️</span>
+                    <span>Timesheet</span>
+                </a>
+                <a href="attendance.html" class="nav-item">
+                    <span class="icon">📋</span>
+                    <span>Attendance</span>
+                </a>
+                <a href="company-documents.html" class="nav-item">
+                    <span class="icon">📄</span>
+                    <span>Company Documents</span>
+                </a>
+                <a href="announcement.html" class="nav-item">
+                    <span class="icon">📢</span>
+                    <span>Announcement</span>
+                </a>
+                <a href="leave.html" class="nav-item">
+                    <span class="icon">📅</span>
+                    <span>Leave</span>
+                </a>
+                <a href="calendar.html" class="nav-item active">
+                    <span class="icon">📆</span>
+                    <span>Calendar</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="breadcrumb">Calendar</div>
+                <div class="user-info">
+                    <span class="user-name" id="userName">Guest User</span>
+                    <div class="user-avatar" id="userAvatar">GU</div>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button class="btn-calendar-nav" onclick="previousMonth()">←</button>
+                        <h2 id="monthYear">March 2026</h2>
+                        <button class="btn-calendar-nav" onclick="nextMonth()">→</button>
+                    </div>
+
+                    <div class="calendar-weekdays">
+                        <div class="weekday">Mo</div>
+                        <div class="weekday">Tu</div>
+                        <div class="weekday">We</div>
+                        <div class="weekday">Th</div>
+                        <div class="weekday">Fr</div>
+                        <div class="weekday">Sa</div>
+                        <div class="weekday">Su</div>
+                    </div>
+
+                    <div class="calendar-grid" id="calendarGrid">
+                        <!-- Populated by JavaScript -->
+                    </div>
+
+                    <div class="calendar-legend">
+                        <h3>Legend</h3>
+                        <div class="legend-items">
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #10B981;"></div>
+                                <span>Approved Leave</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #F59E0B;"></div>
+                                <span>Leaves Applied (Pending)</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #EF4444;"></div>
+                                <span>Rejected Leave</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #8B5CF6;"></div>
+                                <span>Filled Hours</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #6366F1;"></div>
+                                <span>Holiday</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-color" style="background-color: #06B6D4;"></div>
+                                <span>Partially Filled Hours</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Day Details Modal -->
+                <div id="dayModal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 id="modalTitle">Day Details</h2>
+                            <button class="modal-close" onclick="closeDayModal()">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <!-- Leave Information -->
+                            <div id="leaveInfo" style="margin-bottom: 25px;">
+                                <h3 style="color: #1F2937; margin-bottom: 15px;">Leave Information</h3>
+                                <div id="leaveDetails" style="background-color: #F3F4F6; padding: 15px; border-radius: 8px;">
+                                    <p style="color: #9CA3AF;">No leave scheduled for this day</p>
+                                </div>
+                            </div>
+
+                            <!-- Tasks Section -->
+                            <div>
+                                <h3 style="color: #1F2937; margin-bottom: 15px;">Tasks for This Day</h3>
+                                
+                                <div id="tasksList" style="margin-bottom: 20px;">
+                                    <p style="color: #9CA3AF; text-align: center; padding: 20px;">No tasks scheduled</p>
+                                </div>
+
+                                <!-- Add Task Form -->
+                                <div style="background-color: #F3F4F6; padding: 20px; border-radius: 8px;">
+                                    <h4 style="color: #1F2937; margin-bottom: 15px;">Add New Task</h4>
+                                    <div class="form-group">
+                                        <input 
+                                            type="text" 
+                                            id="taskTitle" 
+                                            placeholder="Task title" 
+                                            style="width: 100%; padding: 10px; border: 1px solid #E5E7EB; border-radius: 6px; margin-bottom: 10px;"
+                                        >
+                                    </div>
+                                    <div class="form-group">
+                                        <textarea 
+                                            id="taskDescription" 
+                                            placeholder="Task description (optional)" 
+                                            rows="3"
+                                            style="width: 100%; padding: 10px; border: 1px solid #E5E7EB; border-radius: 6px; margin-bottom: 10px; resize: vertical;"
+                                        ></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <select 
+                                            id="taskPriority" 
+                                            style="width: 100%; padding: 10px; border: 1px solid #E5E7EB; border-radius: 6px; margin-bottom: 15px;"
+                                        >
+                                            <option value="low">Low Priority</option>
+                                            <option value="medium" selected>Medium Priority</option>
+                                            <option value="high">High Priority</option>
+                                        </select>
+                                    </div>
+                                    <button 
+                                        class="btn btn-primary" 
+                                        onclick="addTaskForDay()"
+                                        style="width: 100%;"
+                                    >
+                                        ➕ Add Task
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeDayModal()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <style>
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid #E5E7EB;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h2 {
+            margin: 0;
+            color: #1F2937;
+            font-size: 24px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #9CA3AF;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background-color: #F3F4F6;
+            color: #1F2937;
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 20px;
+            border-top: 1px solid #E5E7EB;
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .task-item {
+            background-color: white;
+            border: 1px solid #E5E7EB;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            transition: all 0.3s ease;
+        }
+
+        .task-item:hover {
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: #1F2937;
+            margin: 0 0 5px 0;
+        }
+
+        .task-description {
+            color: #9CA3AF;
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .task-priority {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        .priority-low {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .priority-medium {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .priority-high {
+            background-color: #FEE2E2;
+            color: #7F1D1D;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .task-btn {
+            padding: 6px 12px;
+            border: none;
+            background-color: #F3F4F6;
+            color: #374151;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .task-btn:hover {
+            background-color: #E5E7EB;
+        }
+
+        .task-btn-delete {
+            background-color: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .task-btn-delete:hover {
+            background-color: #FEE2E2;
+        }
+
+        .leave-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 12px;
+            margin: 5px 0;
+        }
+
+        .leave-approved {
+            background-color: #D1FAE5;
+            color: #065F46;
+        }
+
+        .leave-pending {
+            background-color: #FEF3C7;
+            color: #92400E;
+        }
+
+        .leave-rejected {
+            background-color: #FEE2E2;
+            color: #7F1D1D;
+        }
+    </style>
+
+    <script src="script.js"></script>
+    <script>
+        let currentDate = new Date(2026, 2, 1); // March 2026
+        let selectedDate = null;
+
+        function renderCalendar() {
+            const year = currentDate.getFullYear();
+            const month = currentDate.getMonth();
+            
+            document.getElementById('monthYear').textContent = 
+                new Date(year, month).toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const daysInMonth = lastDay.getDate();
+            const startingDayOfWeek = firstDay.getDay();
+
+            const calendarGrid = document.getElementById('calendarGrid');
+            calendarGrid.innerHTML = '';
+
+            // Add empty cells for days before month starts
+            for (let i = 1; i < startingDayOfWeek; i++) {
+                const emptyCell = document.createElement('div');
+                emptyCell.className = 'calendar-day empty';
+                calendarGrid.appendChild(emptyCell);
+            }
+
+            // Add days of month
+            const leaves = JSON.parse(localStorage.getItem('leaves')) || [];
+            for (let day = 1; day <= daysInMonth; day++) {
+                const dayCell = document.createElement('div');
+                dayCell.className = 'calendar-day';
+                
+                const dayDate = new Date(year, month, day);
+                const dateString = dayDate.toISOString().split('T')[0];
+
+                // Check for leaves on this day
+                const dayLeaves = leaves.filter(leave => {
+                    const fromDate = new Date(leave.fromDate);
+                    const toDate = new Date(leave.toDate);
+                    return dayDate >= fromDate && dayDate <= toDate;
+                });
+
+                if (dayLeaves.length > 0) {
+                    const leave = dayLeaves[0];
+                    if (leave.status === 'approved') {
+                        dayCell.classList.add('day-approved');
+                    } else if (leave.status === 'pending') {
+                        dayCell.classList.add('day-pending');
+                    } else if (leave.status === 'rejected') {
+                        dayCell.classList.add('day-rejected');
+                    }
+                }
+
+                // Mark special days
+                if (day === 20) dayCell.classList.add('day-holiday');
+
+                dayCell.innerHTML = `<div class="day-number">${day}</div>`;
+                
+                // Add click event to open modal
+                dayCell.addEventListener('click', () => openDayModal(day, month, year, dayLeaves));
+                
+                // Make it clear the day is clickable
+                dayCell.style.cursor = 'pointer';
+                
+                calendarGrid.appendChild(dayCell);
+            }
+        }
+
+        function previousMonth() {
+            currentDate.setMonth(currentDate.getMonth() - 1);
+            renderCalendar();
+        }
+
+        function nextMonth() {
+            currentDate.setMonth(currentDate.getMonth() + 1);
+            renderCalendar();
+        }
+
+        function openDayModal(day, month, year, dayLeaves) {
+            selectedDate = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            
+            // Update modal title
+            const dateStr = new Date(year, month, day).toLocaleDateString('en-US', { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            });
+            document.getElementById('modalTitle').textContent = `${dateStr}`;
+
+            // Display leave information
+            const leaveDetails = document.getElementById('leaveDetails');
+            if (dayLeaves.length > 0) {
+                const leave = dayLeaves[0];
+                const statusClass = `leave-${leave.status}`;
+                leaveDetails.innerHTML = `
+                    <p><strong>Leave Type:</strong> ${leave.leaveType}</p>
+                    <p><strong>Reason:</strong> ${leave.reason || 'N/A'}</p>
+                    <span class="leave-badge ${statusClass}">${leave.status.toUpperCase()}</span>
+                `;
+            } else {
+                leaveDetails.innerHTML = '<p style="color: #9CA3AF;">No leave scheduled for this day</p>';
+            }
+
+            // Load and display tasks for this day
+            loadTasksForDay(selectedDate);
+
+            // Clear input fields
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskPriority').value = 'medium';
+
+            // Show modal
+            document.getElementById('dayModal').style.display = 'block';
+        }
+
+        function closeDayModal() {
+            document.getElementById('dayModal').style.display = 'none';
+            selectedDate = null;
+        }
+
+        function loadTasksForDay(dateStr) {
+            const allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const dayTasks = allTasks.filter(task => task.date === dateStr);
+
+            const tasksList = document.getElementById('tasksList');
+            
+            if (dayTasks.length === 0) {
+                tasksList.innerHTML = '<p style="color: #9CA3AF; text-align: center; padding: 20px;">No tasks scheduled</p>';
+                return;
+            }
+
+            tasksList.innerHTML = dayTasks.map(task => `
+                <div class="task-item">
+                    <div class="task-content">
+                        <p class="task-title">${escapeHtml(task.title)}</p>
+                        ${task.description ? `<p class="task-description">${escapeHtml(task.description)}</p>` : ''}
+                        <span class="task-priority priority-${task.priority}">${task.priority.toUpperCase()}</span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="task-btn task-btn-delete" onclick="deleteTask('${task.id}')">🗑️ Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addTaskForDay() {
+            if (!selectedDate) {
+                alert('Please select a date first');
+                return;
+            }
+
+            const title = document.getElementById('taskTitle').value.trim();
+            const description = document.getElementById('taskDescription').value.trim();
+            const priority = document.getElementById('taskPriority').value;
+
+            if (!title) {
+                alert('Please enter a task title');
+                return;
+            }
+
+            const allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            const newTask = {
+                id: Date.now().toString(),
+                date: selectedDate,
+                title: title,
+                description: description,
+                priority: priority,
+                createdAt: new Date().toLocaleString()
+            };
+
+            allTasks.push(newTask);
+            localStorage.setItem('tasks', JSON.stringify(allTasks));
+
+            // Reload tasks display
+            loadTasksForDay(selectedDate);
+
+            // Clear inputs
+            document.getElementById('taskTitle').value = '';
+            document.getElementById('taskDescription').value = '';
+            document.getElementById('taskPriority').value = 'medium';
+
+            // Show success message
+            showNotification('Task added successfully!', 'success');
+        }
+
+        function deleteTask(taskId) {
+            if (!confirm('Are you sure you want to delete this task?')) {
+                return;
+            }
+
+            let allTasks = JSON.parse(localStorage.getItem('tasks')) || [];
+            allTasks = allTasks.filter(task => task.id !== taskId);
+            localStorage.setItem('tasks', JSON.stringify(allTasks));
+
+            // Reload tasks display
+            loadTasksForDay(selectedDate);
+            
+            showNotification('Task deleted successfully!', 'success');
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Close modal when clicking outside of it
+        window.onclick = function(event) {
+            const modal = document.getElementById('dayModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Render calendar on load
+        renderCalendar();
+    </script>
+</body>
+</html>

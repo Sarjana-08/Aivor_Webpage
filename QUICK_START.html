@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Start Guide - Aivor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #F3F4F6;
+            color: #374151;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 40px;
+            border-radius: 12px;
+        }
+        
+        header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .section {
+            background: white;
+            padding: 30px;
+            margin-bottom: 30px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        }
+        
+        .section h2 {
+            color: #1F2937;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #4F46E5;
+            padding-bottom: 10px;
+        }
+        
+        .section h3 {
+            color: #374151;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .code-block {
+            background-color: #F3F4F6;
+            border-left: 4px solid #4F46E5;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            overflow-x: auto;
+        }
+        
+        .steps {
+            counter-reset: step;
+            list-style: none;
+        }
+        
+        .steps li {
+            counter-increment: step;
+            margin-bottom: 20px;
+            padding-left: 40px;
+            position: relative;
+        }
+        
+        .steps li::before {
+            content: counter(step);
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #4F46E5;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+        
+        .file-structure {
+            background-color: #F3F4F6;
+            padding: 20px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+        }
+        
+        .highlight {
+            background-color: #FEF3C7;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .warning {
+            background-color: #FEE2E2;
+            border-left: 4px solid #EF4444;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        .success {
+            background-color: #D1FAE5;
+            border-left: 4px solid #10B981;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 6px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #E5E7EB;
+        }
+        
+        th {
+            background-color: #F3F4F6;
+            font-weight: 600;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: #9CA3AF;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Aivor Quick Start Guide</h1>
+            <p>Get up and running with Aivor in minutes</p>
+        </header>
+
+        <div class="section">
+            <h2>Welcome to Aivor</h2>
+            <p>
+                Aivor is a fully-featured Employee Leave Management System built with vanilla HTML, CSS, and JavaScript. 
+                This guide will help you set up and customize Aivor for your organization.
+            </p>
+        </div>
+
+        <div class="section">
+            <h2>📋 Initial Setup</h2>
+            <ol class="steps">
+                <li>
+                    <strong>Extract Files</strong>
+                    <p>Extract all Aivor files to a folder on your web server or local directory.</p>
+                </li>
+                <li>
+                    <strong>Open in Browser</strong>
+                    <p>Open <span class="highlight">index.html</span> in any modern web browser.</p>
+                </li>
+                <li>
+                    <strong>Login with Demo Credentials</strong>
+                    <p>Use <strong>demo@aivor.com</strong> / <strong>demo123</strong> to access the system.</p>
+                </li>
+                <li>
+                    <strong>Test All Features</strong>
+                    <p>Explore the dashboard, leave management, calendar, and attendance modules.</p>
+                </li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>🎨 Customization Guide</h2>
+            
+            <h3>1. Change Company Name and Branding</h3>
+            <p>Edit the following in <span class="highlight">config.js</span>:</p>
+            <div class="code-block">
+company: {
+    name: 'Your Company Name',
+    tagline: 'Your Company Tagline',
+    website: 'https://yourcompany.com',
+    email: 'support@yourcompany.com',
+    phone: '+1-XXX-XXX-XXXX'
+}
+            </div>
+            
+            <h3>2. Update Company Colors</h3>
+            <p>Modify the color scheme in <span class="highlight">styles.css</span>:</p>
+            <div class="code-block">
+:root {
+    --primary-color: #YOUR_PRIMARY_COLOR;
+    --secondary-color: #YOUR_SECONDARY_COLOR;
+    --success-color: #YOUR_SUCCESS_COLOR;
+    --danger-color: #YOUR_DANGER_COLOR;
+    /* ... more colors */
+}
+            </div>
+
+            <h3>3. Replace Logo</h3>
+            <p>You have two options:</p>
+            <ul style="margin-left: 20px;">
+                <li><strong>Option A:</strong> Replace the SVG logo in each HTML file's logo section</li>
+                <li><strong>Option B:</strong> Replace SVG with an image tag: 
+                    <div class="code-block">&lt;img src="logo.png" alt="Company Logo"&gt;</div>
+                </li>
+            </ul>
+
+            <h3>4. Update Demo Users</h3>
+            <p>Edit demo users in <span class="highlight">config.js</span>:</p>
+            <div class="code-block">
+demoUsers: [
+    {
+        email: 'user@yourcompany.com',
+        password: 'password123',
+        name: 'Employee Name',
+        userEmail: 'user@yourcompany.com',
+        role: 'employee'
+    }
+]
+            </div>
+
+            <h3>5. Configure Leave Types</h3>
+            <p>Customize leave types in <span class="highlight">config.js</span>:</p>
+            <div class="code-block">
+leaveTypes: [
+    { value: 'casualLeave', label: 'Casual Leave' },
+    { value: 'sickLeave', label: 'Sick Leave' },
+    // Add more...
+]
+            </div>
+
+            <h3>6. Set Leave Balance</h3>
+            <p>Configure leave balance in <span class="highlight">config.js</span>:</p>
+            <div class="code-block">
+leaveBalance: {
+    totalAnnual: 20,
+    casualLeave: 12,
+    sickLeave: 5,
+    paidLeave: 3
+}
+            </div>
+
+            <h3>7. Add Company Holidays</h3>
+            <p>Add holidays in <span class="highlight">config.js</span>:</p>
+            <div class="code-block">
+holidays: [
+    { date: '2026-01-01', name: 'New Year' },
+    { date: '2026-12-25', name: 'Christmas' },
+    // Add more...
+]
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📁 File Descriptions</h2>
+            <table>
+                <tr>
+                    <th>File Name</th>
+                    <th>Description</th>
+                </tr>
+                <tr>
+                    <td><strong>index.html</strong></td>
+                    <td>Login page - First page users see</td>
+                </tr>
+                <tr>
+                    <td><strong>dashboard.html</strong></td>
+                    <td>Main dashboard with overview and quick actions</td>
+                </tr>
+                <tr>
+                    <td><strong>leave-form.html</strong></td>
+                    <td>Form to apply for new leave</td>
+                </tr>
+                <tr>
+                    <td><strong>leave.html</strong></td>
+                    <td>View and manage leave requests</td>
+                </tr>
+                <tr>
+                    <td><strong>calendar.html</strong></td>
+                    <td>Interactive calendar showing all leaves</td>
+                </tr>
+                <tr>
+                    <td><strong>attendance.html</strong></td>
+                    <td>Attendance records and logs</td>
+                </tr>
+                <tr>
+                    <td><strong>styles.css</strong></td>
+                    <td>Main stylesheet - Update colors and styles here</td>
+                </tr>
+                <tr>
+                    <td><strong>script.js</strong></td>
+                    <td>Core JavaScript functionality</td>
+                </tr>
+                <tr>
+                    <td><strong>config.js</strong></td>
+                    <td>Configuration file - Customize settings here</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🔐 Demo Credentials</h2>
+            <p>Use these to test the system:</p>
+            <table>
+                <tr>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                </tr>
+                <tr>
+                    <td>demo@aivor.com</td>
+                    <td>demo123</td>
+                    <td>Employee</td>
+                </tr>
+                <tr>
+                    <td>john@aivor.com</td>
+                    <td>john123</td>
+                    <td>Manager</td>
+                </tr>
+                <tr>
+                    <td>admin@aivor.com</td>
+                    <td>admin123</td>
+                    <td>Admin</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>🚀 Features Overview</h2>
+            
+            <h3>✅ Already Implemented</h3>
+            <ul style="margin-left: 20px;">
+                <li>User Authentication & Login</li>
+                <li>Leave Application Form</li>
+                <li>Leave Request Management</li>
+                <li>Interactive Calendar View</li>
+                <li>Attendance Tracking</li>
+                <li>Company Announcements</li>
+                <li>Document Management</li>
+                <li>Responsive Design</li>
+                <li>Local Storage Persistence</li>
+                <li>Auto-logout on Inactivity</li>
+            </ul>
+
+            <h3>📋 Ready for Backend Integration</h3>
+            <ul style="margin-left: 20px;">
+                <li>API endpoints in config.js</li>
+                <li>Database persistence</li>
+                <li>Email notifications</li>
+                <li>Leave approval workflow</li>
+                <li>Role-based access control</li>
+                <li>Audit logging</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>⚙️ Configuration Quick Reference</h2>
+            
+            <h3>Session Timeout</h3>
+            <p>Edit in <span class="highlight">config.js</span> under <span class="highlight">session</span>:</p>
+            <div class="code-block">
+inactivityTimeout: 30 * 60 * 1000, // 30 minutes
+            </div>
+
+            <h3>Items Per Page</h3>
+            <div class="code-block">
+ui: {
+    itemsPerPage: 10
+}
+            </div>
+
+            <h3>Date Format</h3>
+            <div class="code-block">
+ui: {
+    dateFormat: 'YYYY-MM-DD'
+}
+            </div>
+
+            <h3>Enable/Disable Features</h3>
+            <div class="code-block">
+features: {
+    leaveManagement: true,
+    attendance: true,
+    calendar: true,
+    reports: true
+}
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>💡 Best Practices</h2>
+            <ol class="steps">
+                <li>
+                    <strong>Always backup original files</strong>
+                    <p>Keep a copy of original Aivor files before making changes.</p>
+                </li>
+                <li>
+                    <strong>Test changes in a development environment</strong>
+                    <p>Test all customizations before deploying to production.</p>
+                </li>
+                <li>
+                    <strong>Use version control</strong>
+                    <p>Track changes using Git or similar version control system.</p>
+                </li>
+                <li>
+                    <strong>Document all customizations</strong>
+                    <p>Keep track of any changes made for future reference.</p>
+                </li>
+                <li>
+                    <strong>Clear browser cache</strong>
+                    <p>Clear cache when making CSS or JavaScript changes to see updates.</p>
+                </li>
+            </ol>
+        </div>
+
+        <div class="warning">
+            <strong>⚠️ Important Security Notice</strong>
+            <p>
+                This system is a demo/prototype using browser localStorage. For production use, 
+                you MUST implement a proper backend with encryption, secure authentication, and database storage.
+            </p>
+        </div>
+
+        <div class="success">
+            <strong>✅ You're Ready!</strong>
+            <p>
+                You now have all the information needed to customize and deploy Aivor. 
+                If you need additional features or support, refer to the README.md file or contact support.
+            </p>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Aivor - Employee Leave Management System</p>
+            <p>Made with ❤️ for better HR management</p>
+        </footer>
+    </div>
+</body>
+</html>
