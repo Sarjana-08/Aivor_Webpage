@@ -79,7 +79,6 @@ Use these credentials to test the system:
 | Email | Password |
 |-------|----------|
 | demo@aivor.com | demo123 |
-| john@aivor.com | john123 |
 
 ## File Structure
 
